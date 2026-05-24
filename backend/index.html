@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Decision Assistant</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            background: #0f172a;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            min-height: 100vh;
+
+            transition: 0.3s;
+        }
+
+        .container {
+
+            width: 90%;
+            max-width: 850px;
+
+            background: #111827;
+
+            padding: 40px;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 0 25px rgba(0,255,255,0.15);
+
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        h1 {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+            background: linear-gradient(
+                to right,
+                #38bdf8,
+                #818cf8
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+
+            color: #94a3b8;
+
+            margin-bottom: 35px;
+
+            font-size: 18px;
+        }
+
+        h3 {
+
+            margin-top: 25px;
+            margin-bottom: 10px;
+
+            color: #e2e8f0;
+        }
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            border: 1px solid #334155;
+
+            background: #1e293b;
+
+            color: white;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: 0.3s;
+
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        select:focus {
+
+            border-color: #38bdf8;
+
+            box-shadow:
+                0 0 12px rgba(56,189,248,0.4);
+        }
+
+        button {
+
+            margin-top: 35px;
+
+            width: 100%;
+
+            padding: 18px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: linear-gradient(
+                to right,
+                #06b6d4,
+                #6366f1
+            );
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 0 20px rgba(99,102,241,0.5);
+        }
+
+        #answer {
+
+            margin-top: 40px;
+
+            background: #0f172a;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            line-height: 1.8;
+
+            color: #f1f5f9;
+
+            min-height: 100px;
+        }
+
+        #answer h2,
+        #answer h3 {
+
+            color: #38bdf8;
+        }
+
+        #answer strong {
+
+            color: white;
+        }
+
+        #answer ul {
+
+            padding-left: 20px;
+        }
+
+        .loading {
+
+            opacity: 0.7;
+        }
+
+    </style>
+
+</head>
+
+<body id="body">
+
+    <div class="container">
+
+        <h1 id="mainTitle">
+            AI Decision Assistant
+        </h1>
+
+        <div class="subtitle" id="subtitle">
+            Make smarter decisions with AI analysis
+        </div>
+
+        <h3 id="languageTitle">
+            Language
+        </h3>
+
+        <select id="language" onchange="updateLanguage()">
+
+            <option value="english">
+                English
+            </option>
+
+            <option value="hebrew">
+                עברית
+            </option>
+
+        </select>
+
+        <h3 id="decisionTitle">
+            What decision are you trying to make?
+        </h3>
+
+        <input
+            type="text"
+            id="decision"
+            placeholder="Should I buy an apartment?"
+        >
+
+        <h3 id="budgetTitle">
+            What is your budget?
+        </h3>
+
+        <input
+            type="text"
+            id="budget"
+            placeholder="1,500,000"
+        >
+
+        <h3 id="concernsTitle">
+            Main concerns
+        </h3>
+
+        <input
+            type="text"
+            id="concerns"
+            placeholder="Risk, location, investment..."
+        >
+
+        <button
+            id="analyzeButton"
+            onclick="askAI()"
+        >
+            Analyze Decision
+        </button>
+
+        <div id="answer"></div>
+
+    </div>
+
+    <script>
+
+        function updateLanguage() {
+
+            let language =
+                document.getElementById("language").value;
+
+            let body =
+                document.getElementById("body");
+
+            if (language === "hebrew") {
+
+                body.style.direction = "rtl";
+                body.style.textAlign = "right";
+
+                document.getElementById("mainTitle").innerText =
+                    "עוזר החלטות AI";
+
+                document.getElementById("subtitle").innerText =
+                    "קבל החלטות חכמות יותר בעזרת בינה מלאכותית";
+
+                document.getElementById("languageTitle").innerText =
+                    "שפה";
+
+                document.getElementById("decisionTitle").innerText =
+                    "איזו החלטה אתה מנסה לקבל?";
+
+                document.getElementById("budgetTitle").innerText =
+                    "מה התקציב שלך?";
+
+                document.getElementById("concernsTitle").innerText =
+                    "חששות עיקריים";
+
+                document.getElementById("analyzeButton").innerText =
+                    "נתח החלטה";
+
+                document.getElementById("decision").placeholder =
+                    "האם לקנות דירה?";
+
+                document.getElementById("budget").placeholder =
+                    "1,500,000";
+
+                document.getElementById("concerns").placeholder =
+                    "סיכון, מיקום, השקעה...";
+
+            } else {
+
+                body.style.direction = "ltr";
+                body.style.textAlign = "left";
+
+                document.getElementById("mainTitle").innerText =
+                    "AI Decision Assistant";
+
+                document.getElementById("subtitle").innerText =
+                    "Make smarter decisions with AI analysis";
+
+                document.getElementById("languageTitle").innerText =
+                    "Language";
+
+                document.getElementById("decisionTitle").innerText =
+                    "What decision are you trying to make?";
+
+                document.getElementById("budgetTitle").innerText =
+                    "What is your budget?";
+
+                document.getElementById("concernsTitle").innerText =
+                    "Main concerns";
+
+                document.getElementById("analyzeButton").innerText =
+                    "Analyze Decision";
+
+                document.getElementById("decision").placeholder =
+                    "Should I buy an apartment?";
+
+                document.getElementById("budget").placeholder =
+                    "1,500,000";
+
+                document.getElementById("concerns").placeholder =
+                    "Risk, location, investment...";
+            }
+        }
+
+        async function askAI() {
+
+            let answerDiv =
+                document.getElementById("answer");
+
+            let language =
+                document.getElementById("language").value;
+
+            if (language === "hebrew") {
+
+                answerDiv.innerHTML =
+                    "ה-AI מנתח את ההחלטה שלך...";
+
+            } else {
+
+                answerDiv.innerHTML =
+                    "AI is analyzing your decision...";
+            }
+
+            answerDiv.classList.add("loading");
+
+            let decision =
+                document.getElementById("decision").value;
+
+            let budget =
+                document.getElementById("budget").value;
+
+            let concerns =
+                document.getElementById("concerns").value;
+
+            let finalQuestion = "";
+
+            if (language === "hebrew") {
+
+                finalQuestion = `
+ענה בעברית בלבד.
+
+כתוב מימין לשמאל.
+
+השתמש בכותרות מסודרות וברורות.
+
+Decision: ${decision}
+
+Budget: ${budget}
+
+Concerns: ${concerns}
+`;
+
+            } else {
+
+                finalQuestion = `
+Answer only in English.
+
+Write left to right.
+
+Use clear organized titles.
+
+Decision: ${decision}
+
+Budget: ${budget}
+
+Concerns: ${concerns}
+`;
+            }
+
+            let response = await fetch(
+                `http://127.0.0.1:8000/ask-ai?question=${encodeURIComponent(finalQuestion)}`
+            );
+
+            let data = await response.json();
+
+            answerDiv.classList.remove("loading");
+
+            if (language === "hebrew") {
+
+                answerDiv.style.direction = "rtl";
+                answerDiv.style.textAlign = "right";
+
+            } else {
+
+                answerDiv.style.direction = "ltr";
+                answerDiv.style.textAlign = "left";
+            }
+
+            answerDiv.innerHTML =
+                marked.parse(data.answer);
+        }
+
+    </script>
+
+</body>
+
+</html>
