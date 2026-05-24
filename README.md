@@ -15,3 +15,7 @@ AI-powered decision analysis platform built with:
 - Hebrew & English support
 - Structured recommendations
 - Pros / Cons / Risks analysis
+
+## AI-Assisted Development
+
+Parts of this project were developed using AI-assisted coding tools such as Cursor and ChatGPT.
