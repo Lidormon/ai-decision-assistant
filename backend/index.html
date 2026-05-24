@@ -410,7 +410,7 @@ Concerns: ${concerns}
             }
 
             let response = await fetch(
-                `http://127.0.0.1:8000/ask-ai?question=${encodeURIComponent(finalQuestion)}`
+                `https://ai-decision-assistant.onrender.com/ask-ai?question=${encodeURIComponent(finalQuestion)}`
             );
 
             let data = await response.json();
